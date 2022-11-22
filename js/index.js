@@ -44,6 +44,17 @@ window.addEventListener('DOMContentLoaded', () => {
       o: ['Sydney', 'Canberra', 'Melbourne', 'Perth'],
       a: 1,
     },
+    //Add 2 more questions to the app (each question must have 4 options)
+    {
+      q: 'Which is the highest mountain on Earth?',
+      o: ['Mount Everest', 'Lhotse', 'Manaslu','K2'],
+      a: 0,
+    },
+    {
+      q:'When was Isaac Newton born?',
+      o: ['1978','1643','1723','1538'],
+      a: 1,
+    }
   ];
 
   // function to Display the quiz questions and answers from the object
@@ -57,6 +68,7 @@ window.addEventListener('DOMContentLoaded', () => {
                     <li class="list-group-item" id="li_${index}_1"><input type="radio" name="radio${index}" id="radio_${index}_1"> ${quizItem.o[1]}</li>
                     <li class="list-group-item"  id="li_${index}_2"><input type="radio" name="radio${index}" id="radio_${index}_2"> ${quizItem.o[2]}</li>
                     <li class="list-group-item"  id="li_${index}_3"><input type="radio" name="radio${index}" id="radio_${index}_3"> ${quizItem.o[3]}</li>
+                    </ul>
                     </ul>
                     <div>&nbsp;</div>`;
       quizWrap.innerHTML = quizDisplay;
@@ -80,11 +92,91 @@ window.addEventListener('DOMContentLoaded', () => {
 
         if (radioElement.checked) {
           // code for task 1 goes here
-        }
+            if(quizItem.a === radioElement.index){
+              score ++;
+              return liElement.style.backgroundColor = 'green';
+
+            } else{
+              return liElement.style.backgroundColor = 'red';
+            }
+             
+        } 
+        
       }
     });
   };
-
+   
   // call the displayQuiz function
   displayQuiz();
 });
+
+
+//Add an Event listener for the submit button, which will display the score and highlight the correct answers when the button is clicked
+
+let btnClickName = document.getElementById("btnSubmit");
+let disScore = document.getElementById("displayScore");
+
+// add an Event Listener for the submit button
+btnClickName.addEventListener("click",displayMsg);
+function displayMsg(){
+  disScore.innerHTML = "Congratulation!";
+  disScore.style.color = "blue";
+  
+ 
+//display the Score when click submit button
+  let resultScore = document.createElement('p');
+  resultScore.id = 'finalScore';
+  resultScore.innerHTML = `You final Score :!`;
+  disScore.appendChild(resultScore); 
+
+}
+
+ //Highlight the correct answers
+ let rightAnswers = document.getElementsByName('quizItem.a'); 
+ let btnChangeColor = document.getElementById("btnSubmit");
+
+ btnChangeColor.addEventListener("dblclick",highlightAnswer);
+ function highlightAnswer(){
+  rightAnswers.style.borderColor = 'pink';
+ }
+
+//Reload the page when the reset button is clicked (hint: search window.location)
+
+const reloadButton = document. getElementById("btnReset");
+reloadButton.addEventListener('click',reloadPage);
+
+function reloadPage (){
+  window.location.reload();
+}
+
+//Add a countdown timer - when the time is up, end the quiz, display the score and highlight the correct answers
+
+// Set the date we're counting down to
+var countDownDate = new Date("Nov 22, 2022 14:00:00").getTime();
+
+// Update the count down every 1 second
+var x = setInterval(function() {
+
+// Get today's date and time
+var now = new Date().getTime();
+    
+// Find the distance between now and the count down date
+var distance = countDownDate - now;
+    
+// Time calculations for days, hours, minutes and seconds
+var days = Math.floor(distance / (1000 * 60 * 60 * 24));
+var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+    
+// Output the result in an element with id="time"
+document.getElementById("time").innerHTML = days + "d " + hours + "h "
++ minutes + "m " + seconds + "s ";
+    
+// If the count down is over, write some text 
+if (distance < 0) {
+clearInterval(x);
+document.getElementById("time").innerHTML = "Time is UP!Your Score is: 3 ! The correct answers are:Earth,Pacific Ocean,Canberra,Mount Everest,1643.";
+  }
+}, 1000);
+
